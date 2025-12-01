@@ -22,7 +22,7 @@ INSTALL_DIR="$MAIN_DIR/$SERVER_DIR"
 VERSION_ID=$(awk -F= '$1 == "VERSION_ID" {gsub(/"/, "", $2); print $2}' /etc/os-release)
 ID=$(awk -F= '$1 == "ID" {gsub(/"/, "", $2); print $2}' /etc/os-release)
 
-# ОБНОВЛЕННАЯ ЧАСТЬ: Определение 32-битных библиотек для разных версий ОС
+# Определение 32-битных библиотек для разных версий ОС
 if [[ "$ID" == "ubuntu" ]]; then
     if [[ "$VERSION_ID" == "22.04" ]] || [[ "$VERSION_ID" == "24.04" ]]; then
         bits_lib_32="lib32gcc-s1 lib32stdc++6 bc"
@@ -39,10 +39,10 @@ rehlds_url=$(wget -qO - https://img.shields.io/github/v/release/dreamstalker/reh
 regamedll_url=$(wget -qO - https://img.shields.io/github/release/s1lentq/ReGameDLL_CS.svg | grep -oP '(?<=release: v)[0-9.]*(?=<\/title>)')
 metamodr_url=$(wget -qO - https://img.shields.io/github/release/theAsmodai/metamod-r.svg | grep -oP '(?<=release: v)[0-9.]*(?=<\/title>)')
 
-#версия reunion
+# версия reunion
 reunion_version=$(wget -qO - https://img.shields.io/github/v/release/s1lentq/reunion.svg?include_prereleases | grep -oP '(?<=release: v)[0-9.]*(?=<\/title>)')
 
-#сборка amxx
+# сборка amxx
 amxx_build_url='https://www.amxmodx.org/downloads-new.php?branch=master&all=1'
 html=$(curl -s "$amxx_build_url")
 amxx_build_version=$(echo "$html" | grep -oP '<strong>\K[0-9]+\.[0-9]+ - build \K[0-9]+' | awk '{print $1""$2}')
@@ -53,7 +53,7 @@ echo "--------------------------------------------------------------------------
 echo "Установка сервера Counter Strike 1.6"
 echo "-------------------------------------------------------------------------------"
 
-# генерирует соль reunion для нормальной работы.
+# генерирует случайную строку для использования как salt.
 generate_random_string() {
   local length=$1
   tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c $length
@@ -90,7 +90,7 @@ check_version() {
 check_packages() {
 	BIT64_CHECK=false && [ $(getconf LONG_BIT) == "64" ] && BIT64_CHECK=true
 	
-	# ОБНОВЛЕННАЯ ПРОВЕРКА: проверяем все библиотеки из списка
+	# проверяем все библиотеки из списка
 	LIB_CHECK=true
 	for lib in $bits_lib_32; do
 		if [ "`(dpkg --get-selections $lib | egrep -o \"(de)?install\") 2> /dev/null`" != "install" ]; then
